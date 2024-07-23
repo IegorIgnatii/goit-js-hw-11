@@ -14,8 +14,7 @@ const inputEl = document.querySelector('.input');
 formEl.addEventListener('submit', event => {
   event.preventDefault();
   listImagesEl.innerHTML = '';
-  loaderEl.classList.add('loader-open');
-
+  loaderEl.style.display = 'block';
   const valueUser = inputEl.value.trim();
 
   formEl.reset();
@@ -24,14 +23,14 @@ formEl.addEventListener('submit', event => {
       title: 'Error',
       message: 'Please enter a search query',
     });
-    loaderEl.classList.remove('loader-open');
+    loaderEl.style.display = 'none';
+
     return;
   }
 
   fetchImages(valueUser)
     .then(data => {
       if (data.hits.length === 0) {
-        loaderEl.classList.remove('loader-open');
         iziToast.warning({
           title: 'Warning',
           message:
@@ -52,5 +51,8 @@ formEl.addEventListener('submit', event => {
         title: 'Error',
         message: `Something went wrong: ${error.message}`,
       });
+    })
+    .finally(() => {
+      loaderEl.style.display = 'none';
     });
 });
